@@ -1,3 +1,22 @@
 version: 1
 send_anonymous_usage_stats: true
 project_id: 56b9768a-2985-46f2-b1e6-4f9260c7e7e1
+plugins:
+  extractors:
+  - name: tap-spreadsheets-anywhere
+    pip_url: git+https://github.com/ets/tap-spreadsheets-anywhere.git
+    config:
+      tables:
+      - path: file:///home/brown/repos/small-world-meltano/small-world-meltano/data/
+        name: upload_toggl
+        pattern: .*
+        start_date: '2017-05-01T00:00:00Z'
+        key_properties:
+        - id
+        format: csv
+  loaders:
+  - name: target-csv
+    variant: singer-io
+    pip_url: target-csv
+    config:
+      destination_path: "/home/brown/repos/small-world-meltano/small-world-meltano/data/"
